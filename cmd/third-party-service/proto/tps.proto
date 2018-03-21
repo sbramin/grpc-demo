@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package tps;
+
+option go_package = "github.com/sbramin/grpc-demo/cmd/third-party-service/pkg/pb/tps";
+
+service ThirdPartyService {
+	rpc Echo(Input) returns (Output) {};
+}
+
+message Input {
+	int64 id = 1;
+	string super_message = 2;
+}
+
+message Output {
+	string resp = 1;
+}
+
+

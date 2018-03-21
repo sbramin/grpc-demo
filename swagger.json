@@ -1,0 +1,91 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "github.com/sbramin/grpc-demo/proto/service.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/echo": {
+      "get": {
+        "operationId": "Echo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/exampleResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "req",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "no",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Example"
+        ]
+      }
+    },
+    "/api/v1/example": {
+      "get": {
+        "operationId": "GetExample",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/exampleResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "req",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "no",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Example"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "exampleResponse": {
+      "type": "object",
+      "properties": {
+        "resp": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

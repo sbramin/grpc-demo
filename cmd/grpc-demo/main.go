@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/jawher/mow.cli"
 	"github.com/sbramin/grpc-demo/cmd/third-party-service/pkg/pb/tps"
 	"github.com/sbramin/grpc-demo/internal/service"
@@ -50,6 +52,12 @@ func main() {
 		Value:  8090,
 		EnvVar: "GRPC_PORT",
 	})
+	grpcWeb := app.Int(cli.IntOpt{
+		Name:   "grpc-web",
+		Desc:   "GRPC Web",
+		Value:  9090,
+		EnvVar: "GRPC_WEB",
+	})
 	tpsAPI := app.String(cli.StringOpt{
 		Name:   "tps-api",
 		Desc:   "Third-Party-Service-API",
@@ -85,12 +93,27 @@ func main() {
 			)),
 		)
 
-		example.RegisterExampleServer(gSrv, svc)
+		example.RegisterGreeterServer(gSrv, svc)
 
 		go waitForShutdown(func() {
 			logger.Warn("shutdown")
 			gSrv.GracefulStop()
 		})
+
+		go func() {
+			wrappedServer := grpcweb.WrapServer(gSrv)
+			handler := func(resp http.ResponseWriter, req *http.Request) {
+				wrappedServer.ServeHTTP(resp, req)
+			}
+			httpServer := http.Server{
+				Addr:    fmt.Sprintf(":%d", *grpcWeb),
+				Handler: http.HandlerFunc(handler),
+			}
+			if err := httpServer.ListenAndServe(); err != nil {
+				log.Panicf("failed starting http server: %v", err)
+			}
+		}()
+
 		reflection.Register(gSrv)
 		if err := gSrv.Serve(lis); err != nil {
 			log.Panicf("failed to serve: %v", err)

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/sbramin/grpc-demo/cmd/third-party-service/pkg/pb/tps"
-	"github.com/utilitywarehouse/grpc-demo/pkg/pb/example"
+	"github.com/sbramin/grpc-demo/pkg/pb/example"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

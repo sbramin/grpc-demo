@@ -4,19 +4,9 @@ package example;
 
 option go_package = "github.com/sbramin/grpc-demo/pkg/pb/example";
 
-import "google/api/annotations.proto";
-
-service Example{
-	rpc GetExample(Request) returns (Response) {
-	option (google.api.http) = {
-            		get: "/api/v1/example"
-        	};
-		}
-	rpc Echo(Request) returns (Response) {
-	option (google.api.http) = {
-            		get: "/api/v1/echo"
-        	};
-	}
+service Greeter {
+	rpc GetExample(Request) returns (Response) {}
+	rpc Echo(Request) returns (Response) {}
 }
 
 message Request{
